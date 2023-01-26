@@ -1,5 +1,6 @@
 const express = require("express");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
+const Order = require("../models/Order.model");
 const router = express.Router();
 const Product = require("../models/Product.model");
 
@@ -48,8 +49,16 @@ router.put("/:plantId", (req, res, next) => {
   const { plantId } = req.params;
 
   Product.findByIdAndUpdate(plantId, req.body, { new : true })
-  .then((response) => {
-    res.json(response)
+  .then((res) => {
+    console.log("this is the response: ", res)
+    if (!res){
+      return res.status(404).json({message : "Product not found"})
+    } else {
+      return Order.updateMany({}, {$set : {"products.$.product" : res}})
+    }
+  })
+  .then((res) => {
+    res.json(res)
   })
   .catch((error) => {
     res.json(error)
@@ -61,11 +70,16 @@ router.delete("/:plantId", (req, res, next) => {
   const { plantId } = req.params;
 
   Product.findByIdAndRemove(plantId)
-    .then(() =>
-      res.json({
-        message: `Plant with id ${plantId} was successfully removed.`,
-      })
-    )
+    .then((res) => {
+      if (!res){
+        return res.status(404).json({message : "Product not found"})
+      } else {
+        return Order.updateMany({}, {$pull : {products: plantId}})
+      }
+    })
+    .then((res) => {
+      res.json({message : "Product deleted and removed from orders"})
+    })
     .catch((error) => res.json(error));
 });
 

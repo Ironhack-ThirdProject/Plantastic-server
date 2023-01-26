@@ -44,13 +44,29 @@ const newOrder = {
   user: userId,
   products: plantId,
 }
-  Order.create(newOrder)
+
+  Order.findOne({user: userId})
   .then((response) => {
-    res.json(response)
+    if (response === null) {
+      return Order.create(newOrder)
+    } else {
+      return Order.findOneAndUpdate({user : userId}, {$push : {products: plantId}}, {new: true})
+    }
+  })
+  .then((response) => {
+    console.log("This is the order found ==== ", response)
   })
   .catch((error) => {
-    res.json(error)
+    console.log(error)
   })
+
+  // Order.create(newOrder)
+  // .then((response) => {
+  //   res.json(response)
+  // })
+  // .catch((error) => {
+  //   res.json(error)
+  // })
 
 });
 
