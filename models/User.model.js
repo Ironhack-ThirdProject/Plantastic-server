@@ -23,7 +23,7 @@ const userSchema = new Schema(
       default: false
     },
     order: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "Order",
   },
   },

@@ -1,10 +1,15 @@
 const express = require("express");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 const router = express.Router();
 const Product = require("../models/Product.model");
 
 
 // GET all plants
-router.get("/", (req, res, next) => {
+router.get("/", isAuthenticated, (req, res, next) => {
+  const userId = req.payload
+  console.log("this is the userid :", userId)
+
+
   Product.find()
   .then(response => {
     res.json(response);  

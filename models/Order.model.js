@@ -14,23 +14,23 @@ const orderSchema = new Schema(
     },
     firstName: {
         type: String,
-        required: true
+        required: false
     },
     lastName: {
         type: String,
-        required: true
+        required: false
     },
     totalPrice: { 
         type: Number,
-        required: true
+        required: false
     },
     shippingAddress: { 
         type: String,
-        required: true
+        required: false
     },
     billingAddress: { 
         type: String,
-        required: true
+        required: false
     },
   },
   {
