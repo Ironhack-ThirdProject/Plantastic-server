@@ -7,8 +7,6 @@ const Product = require("../models/Product.model");
 // GET all plants
 router.get("/", isAuthenticated, (req, res, next) => {
   const userId = req.payload
-  console.log("this is the userid :", userId)
-
 
   Product.find()
   .then(response => {
