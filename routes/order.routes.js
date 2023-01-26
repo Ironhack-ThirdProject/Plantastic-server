@@ -20,7 +20,6 @@ const newOrder = {
     res.json(response)
     const newOrderId = response._id.toString()
     console.log(newOrderId)
-    res.redirect(`/order/${newOrderId}`)
   })
   .catch((error) => {
     res.json(error)
