@@ -35,7 +35,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 // GET a specific plant
-router.get("/:plantId", (req, res, next) => {
+router.get("/:plantId", isAuthenticated, (req, res, next) => {
   const { plantId } = req.params;
 
 Product.findById(plantId)

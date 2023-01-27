@@ -54,10 +54,10 @@ const newOrder = {
     }
   })
   .then((response) => {
-    console.log("This is the order found ==== ", response)
+    res.json(response)
   })
   .catch((error) => {
-    console.log(error)
+    res.json(error)
   })
 
 });
