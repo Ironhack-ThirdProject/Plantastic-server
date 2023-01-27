@@ -94,5 +94,20 @@ router.put("/", isAuthenticated, (req, res, next) => {
     });
 });
 
+// DELETE products in the order
+router.delete("/", isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id;
+  let plantId = req.query.id
+
+  Order.findOneAndUpdate({ user: userId }, {$pull: {products: plantId}}, {new: true})
+  .then((response) => {
+    res.json(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+
+})
+
 
 module.exports = router;
