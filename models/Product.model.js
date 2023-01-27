@@ -19,7 +19,7 @@ const productSchema = new Schema(
     }],
     imageURL: {
         type: String,
-        default: "https://cdn-icons-png.flaticon.com/512/628/628283.png",
+        default: "https://cdn-icons-png.flaticon.com/512/628/628283.png",    
         // required: [true, "Image is required."]
     },
     price: {

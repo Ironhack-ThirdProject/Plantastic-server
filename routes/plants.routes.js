@@ -3,11 +3,10 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 const Order = require("../models/Order.model");
 const router = express.Router();
 const Product = require("../models/Product.model");
-
+const cloudinary = require('../config/cloudinary.config')
 
 // GET all plants
 router.get("/", isAuthenticated, (req, res, next) => {
-  const userId = req.payload
 
   Product.find()
   .then(response => {
@@ -19,10 +18,11 @@ router.get("/", isAuthenticated, (req, res, next) => {
 });
 
 // CREATE a plant
-router.post("/", (req, res, next) => {
+router.post("/", isAuthenticated, (req, res, next) => {
   // TODO image URL
   const {name, description, caringTips, price, stock, category, tag} = req.body
 
+  
   Product.create({ name, description, caringTips, price, stock, category, tag })
   .then((response) => {
     res.json(response)
