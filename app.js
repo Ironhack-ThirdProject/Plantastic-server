@@ -15,6 +15,9 @@ const app = express();
 require("./config")(app);
 
 // 👇 Start handling routes here
+const indexRoutes = require("./routes/index.routes");
+app.use("/", indexRoutes);
+
 const plantsRoutes = require("./routes/plants.routes");
 app.use("/plants", plantsRoutes);
 
@@ -22,7 +25,6 @@ const orderRoutes = require("./routes/order.routes");
 app.use("/order", orderRoutes);
 
 const authRoutes = require("./routes/auth.routes");
-
 app.use("/auth", authRoutes);
 
 app.use(async (req, res, next) => {

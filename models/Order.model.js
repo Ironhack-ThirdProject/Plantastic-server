@@ -32,6 +32,10 @@ const orderSchema = new Schema(
         type: String,
         required: false
     },
+    status:{
+        type: Boolean,
+        default: false
+    }
   },
   {
     timestamps: true,

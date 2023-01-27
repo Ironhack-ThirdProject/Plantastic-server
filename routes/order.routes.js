@@ -54,19 +54,11 @@ const newOrder = {
     }
   })
   .then((response) => {
-    console.log("This is the order found ==== ", response)
+    res.json(response)
   })
   .catch((error) => {
-    console.log(error)
+    res.json(error)
   })
-
-  // Order.create(newOrder)
-  // .then((response) => {
-  //   res.json(response)
-  // })
-  // .catch((error) => {
-  //   res.json(error)
-  // })
 
 });
 
@@ -77,7 +69,6 @@ router.get("/", isAuthenticated, checkAdmin, (req, res, next) => {
   Order.find({ user: userId })
     .populate("products")
     .then((response) => {
-      console.log("this is the order: ", response)
       res.json(response);
     })
     .catch((error) => {
@@ -96,13 +87,27 @@ router.put("/", isAuthenticated, (req, res, next) => {
     { new: true }
   )
     .then((response) => {
-      console.log("THIS IS THE FINAL ORDER ====", response);
       res.json(response);
     })
     .catch((error) => {
       res.json(error);
     });
 });
+
+// DELETE products in the order
+router.delete("/", isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id;
+  let plantId = req.query.id
+
+  Order.findOneAndUpdate({ user: userId }, {$pull: {products: plantId}}, {new: true})
+  .then((response) => {
+    res.json(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+
+})
 
 
 module.exports = router;
