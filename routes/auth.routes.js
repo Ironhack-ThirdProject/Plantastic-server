@@ -98,10 +98,10 @@ router.post("/login", (req, res, next) => {
 
       if (passwordCorrect) {
         // Deconstruct the user object to omit the password
-        const { _id, email, name } = foundUser;
+        const { _id, email, name, isAdmin } = foundUser;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, email, name };
+        const payload = { _id, email, name, isAdmin };
 
         // Create a JSON Web Token and sign it
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -127,5 +127,24 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   // Send back the token payload object containing the user data
   res.status(200).json(req.payload);
 });
+
+router.get("/verifyAdmin", isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id
+  User.findById(userId)
+  .then((response) => {
+    if (response.isAdmin) {
+      console.log("Is an Admin!");
+      res.json({ isAdmin: true});
+      return;
+    } else {
+      console.log("Is not an Admin :(");
+      res.json({ isAdmin: false});
+      return;
+    }
+  })
+  console.log("We are in the backend");
+  //console.log(req.payload);
+  //res.status(200).json(req.payload);
+})
 
 module.exports = router;

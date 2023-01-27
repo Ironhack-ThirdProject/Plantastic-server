@@ -22,8 +22,24 @@ function getTokenFromHeaders(req) {
 
   return null;
 }
+//const jwt = require('jsonwebtoken');
+
+const checkAdmin = (req, res, next) => {
+    //const token = req.headers.authorization;
+    try {
+        //const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (req.payload.isAdmin) {
+            next();
+        } else {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+};
+
 
 // Export the middleware so that we can use it to create protected routes
 module.exports = {
-  isAuthenticated,
+  isAuthenticated, checkAdmin
 };

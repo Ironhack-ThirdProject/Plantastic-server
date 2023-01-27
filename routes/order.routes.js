@@ -1,5 +1,5 @@
 const express = require("express");
-const { isAuthenticated } = require("../middleware/jwt.middleware");
+const { isAuthenticated, checkAdmin } = require("../middleware/jwt.middleware");
 const router = express.Router();
 const Order = require("../models/Order.model");
 const Product = require("../models/Product.model.js");
@@ -71,7 +71,7 @@ const newOrder = {
 });
 
 // GET my order
-router.get("/", isAuthenticated, (req, res, next) => {
+router.get("/", isAuthenticated, checkAdmin, (req, res, next) => {
   const userId = req.payload._id;
 
   Order.find({ user: userId })
