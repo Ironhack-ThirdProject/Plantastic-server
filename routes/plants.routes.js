@@ -3,7 +3,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 const Order = require("../models/Order.model");
 const router = express.Router();
 const Product = require("../models/Product.model");
-const cloudinary = require('../config/cloudinary.config')
+const fileUploader = require("../config/cloudinary.config.js");
 
 // GET all plants
 router.get("/", isAuthenticated, (req, res, next) => {
@@ -17,13 +17,14 @@ router.get("/", isAuthenticated, (req, res, next) => {
   })
 });
 
-// CREATE a plant
+
+// POST: CREATE a plant
 router.post("/", isAuthenticated, (req, res, next) => {
   // TODO image URL
-  const {name, description, caringTips, price, stock, category, tag} = req.body
 
-  
-  Product.create({ name, description, caringTips, price, stock, category, tag })
+  console.log("REQ.BODY === ", req.body)
+
+  Product.create(req.body)
   .then((response) => {
     res.json(response)
   })

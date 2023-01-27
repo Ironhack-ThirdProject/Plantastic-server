@@ -60,14 +60,6 @@ const newOrder = {
     console.log(error)
   })
 
-  // Order.create(newOrder)
-  // .then((response) => {
-  //   res.json(response)
-  // })
-  // .catch((error) => {
-  //   res.json(error)
-  // })
-
 });
 
 // GET my order
@@ -77,7 +69,6 @@ router.get("/", isAuthenticated, (req, res, next) => {
   Order.find({ user: userId })
     .populate("products")
     .then((response) => {
-      console.log("this is the order: ", response)
       res.json(response);
     })
     .catch((error) => {
@@ -96,7 +87,6 @@ router.put("/", isAuthenticated, (req, res, next) => {
     { new: true }
   )
     .then((response) => {
-      console.log("THIS IS THE FINAL ORDER ====", response);
       res.json(response);
     })
     .catch((error) => {
