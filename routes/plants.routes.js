@@ -1,12 +1,12 @@
 const express = require("express");
-const { isAuthenticated } = require("../middleware/jwt.middleware");
+const { isAuthenticated, checkAdmin } = require("../middleware/jwt.middleware");
 const Order = require("../models/Order.model");
 const router = express.Router();
 const Product = require("../models/Product.model");
 const fileUploader = require("../config/cloudinary.config.js");
 
 // GET all plants
-router.get("/", isAuthenticated, (req, res, next) => {
+router.get("/", (req, res, next) => {
 
   Product.find()
   .then(response => {
@@ -19,7 +19,7 @@ router.get("/", isAuthenticated, (req, res, next) => {
 
 
 // POST: CREATE a plant
-router.post("/", isAuthenticated, (req, res, next) => {
+router.post("/", isAuthenticated, checkAdmin, (req, res, next) => {
   // TODO image URL
 
   console.log("REQ.BODY === ", req.body)
@@ -35,7 +35,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 // GET a specific plant
-router.get("/:plantId", isAuthenticated, (req, res, next) => {
+router.get("/:plantId", (req, res, next) => {
   const { plantId } = req.params;
 
 Product.findById(plantId)
@@ -45,7 +45,7 @@ Product.findById(plantId)
 
 
 // EDIT a specific plant
-router.put("/:plantId", (req, res, next) => {
+router.put("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
   // TODO image URL
   const { plantId } = req.params;
 
@@ -67,7 +67,7 @@ router.put("/:plantId", (req, res, next) => {
 });
 
 // DELETE a specific plant
-router.delete("/:plantId", (req, res, next) => {
+router.delete("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
   const { plantId } = req.params;
 
   Product.findByIdAndRemove(plantId)

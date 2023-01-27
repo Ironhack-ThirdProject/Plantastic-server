@@ -63,7 +63,7 @@ const newOrder = {
 });
 
 // GET my order
-router.get("/", isAuthenticated, checkAdmin, (req, res, next) => {
+router.get("/", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
 
   Order.find({ user: userId })
