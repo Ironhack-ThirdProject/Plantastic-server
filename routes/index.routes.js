@@ -29,4 +29,8 @@ router.get("/dashboard", isAuthenticated, checkAdmin, (req, res, next) => {
   })
 });
 
+router.get("/checkout", isAuthenticated, (req, res, next) => {
+  
+});
+
 module.exports = router;

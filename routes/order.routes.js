@@ -37,36 +37,40 @@ const User = require("../models/User.model.js");
 
 // CREATE an order
 router.post("/", isAuthenticated, (req, res, next) => {
-  const { plantId } = req.body
-  const userId = req.payload._id
+  const { plantId } = req.body;
+  const userId = req.payload._id;
 
-const newOrder = {
-  user: userId,
-  products: plantId,
-}
+  const newOrder = {
+    user: userId,
+    products: plantId,
+  };
 
-  Order.findOne({user: userId})
-  .then((response) => {
-    if (response === null) {
-      return Order.create(newOrder)
-    } else {
-      return Order.findOneAndUpdate({user : userId}, {$push : {products: plantId}}, {new: true})
-    }
-  })
-  .then((response) => {
-    res.json(response)
-  })
-  .catch((error) => {
-    res.json(error)
-  })
-
+  Order.find({ user: userId })
+    .then((response) => {
+      if (response.length === 0 || response.every(order => order.status === true)) {
+        return Order.create(newOrder);
+      } else {
+        return Order.findOneAndUpdate(
+          { user: userId, status: false },
+          { $push: { products: plantId } },
+          { new: true }
+        );
+      }
+    })
+    .then((response) => {
+      res.json(response);
+      console.log(response)
+    })
+    .catch((error) => {
+      res.json(error);
+    });
 });
 
 // GET my order
 router.get("/", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
 
-  Order.find({ user: userId })
+  Order.findOne({ user: userId, status: false })
     .populate("products")
     .then((response) => {
       res.json(response);
@@ -78,14 +82,11 @@ router.get("/", isAuthenticated, (req, res, next) => {
 
 // UPDATE my order
 router.put("/", isAuthenticated, (req, res, next) => {
-  const { firstName, lastName, shippingAddress, billingAddress } = req.body;
+  const { firstName, lastName, shippingAddress, billingAddress, status } =
+    req.body;
   const userId = req.payload._id;
 
-  Order.findOneAndUpdate(
-    { user: userId },
-    { firstName, lastName, shippingAddress, billingAddress },
-    { new: true }
-  )
+  Order.findOneAndUpdate({ user: userId }, req.body, { new: true })
     .then((response) => {
       res.json(response);
     })
@@ -97,17 +98,19 @@ router.put("/", isAuthenticated, (req, res, next) => {
 // DELETE products in the order
 router.delete("/", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
-  let plantId = req.query.id
+  let plantId = req.query.id;
 
-  Order.findOneAndUpdate({ user: userId }, {$pull: {products: plantId}}, {new: true})
-  .then((response) => {
-    res.json(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-
-})
-
+  Order.findOneAndUpdate(
+    { user: userId, status: false },
+    { $pull: { products: plantId } },
+    { new: true }
+  )
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 
 module.exports = router;
