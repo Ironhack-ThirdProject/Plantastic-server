@@ -86,7 +86,7 @@ router.put("/", isAuthenticated, (req, res, next) => {
     req.body;
   const userId = req.payload._id;
 
-  Order.findOneAndUpdate({ user: userId }, req.body, { new: true })
+  Order.findOneAndUpdate({ user: userId, status : false }, req.body, { new: true })
     .then((response) => {
       res.json(response);
     })
