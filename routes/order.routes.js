@@ -23,6 +23,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
       res.send("Order created and cart deleted!")
     })
     .catch((error) => {
+      console.log("There is an error in here");
       res.json(error);
     });
 });
