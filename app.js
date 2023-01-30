@@ -21,6 +21,9 @@ app.use("/", indexRoutes);
 const plantsRoutes = require("./routes/plants.routes");
 app.use("/plants", plantsRoutes);
 
+const cartRoutes = require("./routes/cart.routes");
+app.use("/cart", cartRoutes);
+
 const orderRoutes = require("./routes/order.routes");
 app.use("/order", orderRoutes);
 

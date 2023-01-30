@@ -66,11 +66,10 @@ router.post("/", isAuthenticated, (req, res, next) => {
     });
 });
 
-// GET my order
+// GET all orders
 router.get("/", isAuthenticated, (req, res, next) => {
-  const userId = req.payload._id;
 
-  Order.findOne({ user: userId, status: false })
+  Order.find()
     .populate("products")
     .then((response) => {
       res.json(response);
@@ -80,13 +79,29 @@ router.get("/", isAuthenticated, (req, res, next) => {
     });
 });
 
+// GET my order
+router.get("/:userId", isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id;
+
+  Order.findOne({ user: userId, status: false })
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+
+
+
 // UPDATE my order
-router.put("/", isAuthenticated, (req, res, next) => {
+router.put("/:orderId", isAuthenticated, (req, res, next) => {
   const { firstName, lastName, shippingAddress, billingAddress, status } =
     req.body;
   const userId = req.payload._id;
+  const { orderId } = req.params;
 
-  Order.findOneAndUpdate({ user: userId, status : false }, req.body, { new: true })
+  Order.findOneAndUpdate({ user: userId }, req.body, { new: true })
     .then((response) => {
       res.json(response);
     })
@@ -96,12 +111,13 @@ router.put("/", isAuthenticated, (req, res, next) => {
 });
 
 // DELETE products in the order
-router.delete("/", isAuthenticated, (req, res, next) => {
+router.delete("/:orderId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
   let plantId = req.query.id;
+  const { orderId } = req.params;
 
   Order.findOneAndUpdate(
-    { user: userId, status: false },
+    { user: userId },
     { $pull: { products: plantId } },
     { new: true }
   )

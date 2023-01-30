@@ -55,7 +55,7 @@ router.put("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
     if (!res){
       return res.status(404).json({message : "Product not found"})
     } else {
-      return Order.updateMany({}, {$set : {"products.$.product" : res}})
+      return Order.updateMany({ status: false }, {$set : {"products.$.product" : res}})
     }
   })
   .then((res) => {
@@ -75,7 +75,7 @@ router.delete("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
       if (!res){
         return res.status(404).json({message : "Product not found"})
       } else {
-        return Order.updateMany({}, {$pull : {products: plantId}})
+        return Order.updateMany({ status: false }, {$pull : {products: plantId}})
       }
     })
     .then((res) => {

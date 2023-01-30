@@ -7,21 +7,33 @@ const orderSchema = new Schema(
         ref: "User",
         required: true 
     },
-    products: {
-        type: [Schema.Types.ObjectId],
-        ref: "Product",
-        required: true,
-    },
+    products: [
+        {
+          productId: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+            min: [1, "Quantity can not be less then 1."],
+            default: 1,
+          },
+          price: Number,
+        },
+      ],
+      totalPrice: {
+          type: Number,
+          required: true,
+          default: 0
+      },
     firstName: {
         type: String,
         required: false
     },
     lastName: {
         type: String,
-        required: false
-    },
-    totalPrice: { 
-        type: Number,
         required: false
     },
     shippingAddress: { 

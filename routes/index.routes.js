@@ -14,19 +14,12 @@ router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
   res.json({ imageURL: req.file.path });
 });
 
-router.get("/profile", (req, res, next) => {
+router.get("/profile", isAuthenticated, (req, res, next) => {
 
 });
 
 router.get("/dashboard", isAuthenticated, checkAdmin, (req, res, next) => {
-  Order.find()
-  .populate("products")
-  .then((response) => {
-    res.json(response)
-  })
-  .catch((error) => {
-    res.json(error)
-  })
+
 });
 
 router.get("/checkout", isAuthenticated, (req, res, next) => {
