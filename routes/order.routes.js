@@ -2,64 +2,25 @@ const express = require("express");
 const { isAuthenticated, checkAdmin } = require("../middleware/jwt.middleware");
 const router = express.Router();
 const Order = require("../models/Order.model");
-const Product = require("../models/Product.model.js");
-const User = require("../models/User.model.js");
-
-// // CREATE an order
-// router.post("/", isAuthenticated, (req, res, next) => {
-//   const { plantId } = req.body;
-//   const userId = req.payload._id;
-
-//   const newOrder = {
-//     user: userId,
-//     products: plantId,
-//   };
-
-//   let userOrder;
-
-//   Order.create(newOrder)
-//     .then((response) => {
-//       userOrder = response;
-//       console.log("This is the user order: ", userOrder);
-//       return User.findByIdAndUpdate(
-//         userId,
-//         { $push: { orders: userOrder } },
-//         { new: true }
-//       );
-//     })
-//     .then((response) => {
-//       res.json(response);
-//     })
-//     .catch((error) => {
-//       res.json(error);
-//     });
-// });
+const Cart = require("../models/Cart.model.js")
 
 // CREATE an order
 router.post("/", isAuthenticated, (req, res, next) => {
-  const { plantId } = req.body;
   const userId = req.payload._id;
 
-  const newOrder = {
-    user: userId,
-    products: plantId,
-  };
-
-  Order.find({ user: userId })
-    .then((response) => {
-      if (response.length === 0 || response.every(order => order.status === true)) {
-        return Order.create(newOrder);
-      } else {
-        return Order.findOneAndUpdate(
-          { user: userId, status: false },
-          { $push: { products: plantId } },
-          { new: true }
-        );
-      }
+  Cart.findOne({ user: userId })
+  .populate("products.productId")
+    .then((cart) => {
+      console.log("Cart found!: ", cart)
+      return Order.create({user: userId, products: cart.products, totalPrice: cart.totalPrice, firstName: req.body.firstName, lastName: req.body.lastName, shippingAddress: req.body.shippingAddress, billingAddress: req.body.shippingAddress})
     })
-    .then((response) => {
-      res.json(response);
-      console.log(response)
+    .then((createdOrder) => {
+      console.log("An order was created!: ", createdOrder)
+      return Cart.deleteOne({ user: userId });
+    })
+    .then(() => {
+      console.log("Cart deleted!")
+      res.send("Order created and cart deleted!")
     })
     .catch((error) => {
       res.json(error);
@@ -70,62 +31,26 @@ router.post("/", isAuthenticated, (req, res, next) => {
 router.get("/", isAuthenticated, (req, res, next) => {
 
   Order.find()
-    .populate("products")
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json(error);
-    });
+  .populate("products.productId")
+  .then((response) => {
+    res.json(response);
+  })
+  .catch((error) => {
+    res.json(error);
+  });
 });
 
-// GET my order
+// GET my orders
 router.get("/:userId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
 
-  Order.findOne({ user: userId, status: false })
+  Order.find({ user: userId })
+  .populate("products.productId")
     .then((response) => {
       res.json(response);
     })
     .catch((error) => {
       res.json(error);
-    });
-});
-
-
-
-// UPDATE my order
-router.put("/:orderId", isAuthenticated, (req, res, next) => {
-  const { firstName, lastName, shippingAddress, billingAddress, status } =
-    req.body;
-  const userId = req.payload._id;
-  const { orderId } = req.params;
-
-  Order.findOneAndUpdate({ user: userId }, req.body, { new: true })
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      res.json(error);
-    });
-});
-
-// DELETE products in the order
-router.delete("/:orderId", isAuthenticated, (req, res, next) => {
-  const userId = req.payload._id;
-  let plantId = req.query.id;
-  const { orderId } = req.params;
-
-  Order.findOneAndUpdate(
-    { user: userId },
-    { $pull: { products: plantId } },
-    { new: true }
-  )
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((error) => {
-      console.log(error);
     });
 });
 
