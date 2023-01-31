@@ -7,11 +7,10 @@ const Order = require("../models/Order.model");
 const nodemailer = require("nodemailer");
 const stripe = require("stripe")(process.env.STRIPE_KEY)
 // POST : Payment
-router.post("/create-checkout-session", isAuthenticated, async (req, res, next) => {
+router.post("/create-checkout-session", isAuthenticated, (req, res, next) => {
   const { cart } = req.body
   
-  try {
-    const session = await stripe.checkout.sessions.create({
+  stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: cart.products.map((product) => {
@@ -29,12 +28,14 @@ router.post("/create-checkout-session", isAuthenticated, async (req, res, next) 
       }),
       success_url: `${process.env.ORIGIN}?success=true`,
       cancel_url: `${process.env.ORIGIN}?canceled=true`,
-    });
-    console.log("URL provided: ", session.url)
-    res.json({newUrl: session.url})
-  } catch (error) {
-    res.status(500).json({error: error.message})
-  }
+    })
+    .then((checkoutSession) => {
+      res.json({newUrl : checkoutSession.url})
+    })
+    .catch((error) => {
+      res.status(500).json({error: error.message})
+    })
+    
 });
 
 
