@@ -4,8 +4,9 @@
 // const Product = require("../models/Product.model");
 // const User = require("../models/Review.model");
 
-// // GET all reviews of user
-// router.get("/:userId", (req, res, next) => {
+/*
+// GET all reviews of user
+router.get("/:userId", (req, res, next) => {
 
 // });
 
@@ -33,4 +34,5 @@
 
 
 
-// module.exports = router;
+module.exports = router;
+*/
