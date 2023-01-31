@@ -1,10 +1,8 @@
 const express = require("express");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 const router = express.Router();
-const Product = require("../models/Product.model");
-const User = require("../models/Review.model");
+const Review = require("../models/Review.model");
 
-/*
 // GET all reviews of user
 router.get("/:userId", (req, res, next) => {
 
@@ -12,7 +10,27 @@ router.get("/:userId", (req, res, next) => {
 
 
 // POST: CREATE a review
-router.post("/", isAuthenticated, isCreator (req, res, next) => {
+router.post("/", isAuthenticated, (req, res, next) => {
+    const userId = req.payload._id;
+    const newReview = {
+        userId: userId,
+        productId: req.body.props,
+        rating: req.body.rating,
+        text: req.body.text
+    }
+console.log("---- New Review ----");
+    console.log(newReview)
+
+console.log("New Review === ", newReview)
+
+  Review.create(newReview)
+  .then((response) => {
+    res.json(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+
 
 });
 
@@ -23,16 +41,15 @@ router.get("/:reviewId", (req, res, next) => {
 
 
 // EDIT a specific review
-router.put("/:reviewId", isAuthenticated, isCreator (req, res, next) => {
+router.put("/:reviewId", isAuthenticated, (req, res, next) => {
 
 });
 
 // DELETE a specific review
-router.delete("/:reviewId", isAuthenticated, isCreator, (req, res, next) => {
+router.delete("/:reviewId", isAuthenticated, (req, res, next) => {
   
 });
 
 
 
 module.exports = router;
-*/
