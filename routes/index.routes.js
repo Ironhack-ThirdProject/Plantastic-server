@@ -5,6 +5,38 @@ const router = express.Router();
 const fileUploader = require("../config/cloudinary.config.js");
 const Order = require("../models/Order.model");
 const nodemailer = require("nodemailer");
+const stripe = require("stripe")(process.env.STRIPE_KEY)
+// POST : Payment
+router.post("/create-checkout-session", isAuthenticated, async (req, res, next) => {
+  const { cart } = req.body
+  
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: cart.products.map((product) => {
+        let priceInCents = product.productId.price * 100
+        return {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: product.productId.name
+            },
+            unit_amount: priceInCents
+          },
+          quantity: product.quantity
+        }
+      }),
+      success_url: `${process.env.ORIGIN}?success=true`,
+      cancel_url: `${process.env.ORIGIN}?canceled=true`,
+    });
+    console.log("URL provided: ", session.url)
+    res.json({newUrl: session.url})
+  } catch (error) {
+    res.status(500).json({error: error.message})
+  }
+});
+
 
 // POST: UPLOAD an image
 router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
@@ -15,7 +47,7 @@ router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
   res.json({ imageURL: req.file.path });
 });
 
-// Send e-mail to the user after checkout
+// POST : Send e-mail to the user after checkout
 router.post('/send-email', isAuthenticated, (req, res, next) => {
   const {email} = req.payload
   const username = req.body.firstName
