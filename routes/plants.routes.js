@@ -35,10 +35,10 @@ router.post("/", isAuthenticated, checkAdmin, (req, res, next) => {
 });
 
 // GET a specific plant
-router.get("/:plantId", (req, res, next) => {
-  const { plantId } = req.params;
+router.get("/:productId", (req, res, next) => {
+  const { productId } = req.params;
 
-Product.findById(plantId)
+Product.findById(productId)
     .then((response) => res.json(response))
     .catch((error) => res.json(error));
 });
