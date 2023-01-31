@@ -30,8 +30,8 @@ app.use("/order", orderRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
-const reviewRoutes = require("./routes/review.routes");
-app.use("/reviews", reviewRoutes);
+//const reviewRoutes = require("./routes/review.routes");
+//app.use("/reviews", reviewRoutes);
 
 app.use(async (req, res, next) => {
     try {
