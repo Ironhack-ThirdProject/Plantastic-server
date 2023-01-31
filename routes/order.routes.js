@@ -11,6 +11,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
   Cart.findOne({ user: userId })
   .populate("products.productId")
     .then((cart) => {
+      console.log("Cart found!: ", cart.products);
       return Order.create({user: userId, products: cart.products, totalPrice: cart.totalPrice, firstName: req.body.firstName, lastName: req.body.lastName, shippingAddress: req.body.shippingAddress, billingAddress: req.body.shippingAddress})
     })
     .then((createdOrder) => {
@@ -46,6 +47,8 @@ router.get("/:userId", isAuthenticated, (req, res, next) => {
   Order.find({ user: userId })
   .populate("products.productId")
     .then((response) => {
+      console.log("----- this is the response from the ../order/userId");
+      console.log(response);
       res.json(response);
     })
     .catch((error) => {

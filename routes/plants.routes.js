@@ -1,6 +1,7 @@
 const express = require("express");
 const { isAuthenticated, checkAdmin } = require("../middleware/jwt.middleware");
 const Order = require("../models/Order.model");
+const Cart = require("../models/Cart.model")
 const router = express.Router();
 const Product = require("../models/Product.model");
 const fileUploader = require("../config/cloudinary.config.js");
@@ -55,7 +56,7 @@ router.put("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
     if (!res){
       return res.status(404).json({message : "Product not found"})
     } else {
-      return Order.updateMany({ status: false }, {$set : {"products.$.product" : res}})
+      return Cart.updateMany({}, {$set : {"products.$.product" : res}})
     }
   })
   .then((res) => {
@@ -75,7 +76,7 @@ router.delete("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
       if (!res){
         return res.status(404).json({message : "Product not found"})
       } else {
-        return Order.updateMany({ status: false }, {$pull : {products: plantId}})
+        return Cart.updateMany({ status: false }, {$pull : {products: plantId}})
       }
     })
     .then((res) => {
