@@ -80,7 +80,7 @@ router.put("/:reviewId", isAuthenticated, (req, res, next) => {
 
 
 
-});
+// });
 
 // DELETE a specific review
 router.delete("/:reviewId", isAuthenticated, (req, res, next) => {
