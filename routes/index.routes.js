@@ -6,8 +6,9 @@ const fileUploader = require("../config/cloudinary.config.js");
 const Order = require("../models/Order.model");
 const nodemailer = require("nodemailer");
 const stripe = require("stripe")(process.env.STRIPE_KEY)
+
 // POST : Payment
-router.post("/create-checkout-session", isAuthenticated, (req, res, next) => {
+router.post("/checkout", isAuthenticated, (req, res, next) => {
   const { cart } = req.body
   
   stripe.checkout.sessions.create({
@@ -91,6 +92,10 @@ router.get("/dashboard", isAuthenticated, checkAdmin, (req, res, next) => {
 
 router.get("/checkout", isAuthenticated, (req, res, next) => {
   
+});
+
+router.post("/webhook", (req, res, next) => {
+  console.log("****HELLO THE PAYMENT IS SUCCESSFUL!*****")
 });
 
 module.exports = router;
