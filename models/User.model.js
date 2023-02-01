@@ -26,6 +26,10 @@ const userSchema = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "Order",
   },
+  reviews: {
+    type: [Schema.Types.ObjectId],
+    ref: "Review",
+},
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
