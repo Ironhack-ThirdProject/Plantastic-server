@@ -42,10 +42,12 @@ const orderSchema = new Schema(
       type: String,
       required: false,
     },
-    status: {
+    isPaid: {
       type: Boolean,
       default: false,
     },
+    stripeCustomerId: String,
+    checkoutSessionId: String
   },
   {
     timestamps: true,
