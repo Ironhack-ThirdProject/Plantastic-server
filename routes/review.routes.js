@@ -77,10 +77,7 @@ router.put("/:reviewId", isAuthenticated, (req, res, next) => {
   .catch((error) => {
     res.json(error)
   })
-
-
-
-// });
+});
 
 // DELETE a specific review
 router.delete("/:reviewId", isAuthenticated, (req, res, next) => {
