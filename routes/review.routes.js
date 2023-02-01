@@ -5,12 +5,29 @@ const Review = require("../models/Review.model");
 const User = require("../models/User.model");
 const Product = require("../models/Product.model");
 
-// GET all reviews of user
-router.get("/:userId", isAuthenticated, (req, res, next) => {
+// GET all reviews of one user
+//reviews/user/287349518375845937
+router.get("/user/:userId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
 
   console.log(userId);
   Review.find({ userId })
+    .then((response) => {
+      console.log("----- this is the response from the ../review/userId");
+      console.log(response);
+      res.json(response);
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+// GET all reviews of one product
+//reviews/product/485979320948652ß9385
+router.get("/product/:productId", isAuthenticated, (req, res, next) => {
+  const productId = req.params.productId;
+  console.log(productId);
+  
+  Review.find({ productId })
     .then((response) => {
       console.log("----- this is the response from the ../review/userId");
       console.log(response);
