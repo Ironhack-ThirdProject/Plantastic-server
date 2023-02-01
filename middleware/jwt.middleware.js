@@ -36,9 +36,13 @@ const checkAdmin = (req, res, next) => {
         return res.status(401).json({ error: 'Unauthorized, this is an Admin problem' });
     }
 };
+const checkCreator = (req, res, next) => {
+  console.log("We are in the checkCreator Middleware.")
+  console.log(req.body);
+}
 
 
 // Export the middleware so that we can use it to create protected routes
 module.exports = {
-  isAuthenticated, checkAdmin
+  isAuthenticated, checkAdmin, checkCreator
 };
