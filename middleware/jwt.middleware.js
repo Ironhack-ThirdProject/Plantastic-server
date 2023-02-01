@@ -19,7 +19,6 @@ function getTokenFromHeaders(req) {
     const token = req.headers.authorization.split(" ")[1];
     return token;
   }
-
   return null;
 }
 //const jwt = require('jsonwebtoken');
@@ -31,10 +30,10 @@ const checkAdmin = (req, res, next) => {
         if (req.payload.isAdmin) {
             next();
         } else {
-            return res.status(401).json({ error: 'Unauthorized' });
+            return res.status(401).json({ error: 'Unauthorized, User does not have admin rights' });
         }
     } catch (error) {
-        return res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).json({ error: 'Unauthorized, this is an Admin problem' });
     }
 };
 
