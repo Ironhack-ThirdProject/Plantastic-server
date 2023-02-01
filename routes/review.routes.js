@@ -1,5 +1,5 @@
 const express = require("express");
-const { isAuthenticated } = require("../middleware/jwt.middleware");
+const { isAuthenticated, checkCreator } = require("../middleware/jwt.middleware");
 const router = express.Router();
 const Review = require("../models/Review.model");
 const User = require("../models/User.model");
@@ -62,7 +62,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 // EDIT a specific review
-router.put("/:reviewId", isAuthenticated, (req, res, next) => {
+router.put("/:reviewId", isAuthenticated, checkCreator, (req, res, next) => {
   const { reviewId } = req.params;
 
   Review.findByIdAndUpdate(reviewId, req.body, { new : true })
