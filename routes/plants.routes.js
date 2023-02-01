@@ -68,15 +68,15 @@ router.put("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
 });
 
 // DELETE a specific plant
-router.delete("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
-  const { plantId } = req.params;
+router.delete("/:productId", isAuthenticated, checkAdmin, (req, res, next) => {
+  const { productId } = req.params;
 
-  Product.findByIdAndRemove(plantId)
+  Product.findByIdAndRemove(productId)
     .then((res) => {
       if (!res){
         return res.status(404).json({message : "Product not found"})
       } else {
-        return Cart.updateMany({ status: false }, {$pull : {products: plantId}})
+        return Cart.updateMany({ status: false }, {$pull : {products: productId}})
       }
     })
     .then((res) => {
