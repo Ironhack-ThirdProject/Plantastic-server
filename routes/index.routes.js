@@ -40,8 +40,8 @@ router.post("/checkout", (req, res, next) => {
         }
       }),
       customer: newStripeCustomer.id,
-      success_url: `${process.env.ORIGIN}?success=true`,
-      cancel_url: `${process.env.ORIGIN}?canceled=true`,
+      success_url: `${process.env.ORIGIN}/payment/success`,
+      cancel_url: `${process.env.ORIGIN}/payment/canceled`,
     })
   })
     .then((checkoutSession) => {
@@ -67,41 +67,6 @@ router.post("/checkout", (req, res, next) => {
       res.status(500).json({error: error.message})
     })
 });
-
-
-// // POST : Payment
-// router.post("/checkout", (req, res, next) => {
-//   const { cart } = req.body
-//   console.log("THIS IS THE CART ====", cart)
-//   let responseFromStripe;
-  
-//   stripe.checkout.sessions.create({
-//       payment_method_types: ['card'],
-//       mode: 'payment',
-//       line_items: cart.products.map((product) => {
-//         let priceInCents = product.productId.price * 100
-//         return {
-//           price_data: {
-//             currency: 'eur',
-//             product_data: {
-//               name: product.productId.name
-//             },
-//             unit_amount: priceInCents
-//           },
-//           quantity: product.quantity
-//         }
-//       }),
-//       success_url: `${process.env.ORIGIN}?success=true`,
-//       cancel_url: `${process.env.ORIGIN}?canceled=true`,
-//     })
-//     .then((checkoutSession) => {
-//       responseFromStripe = checkoutSession
-//       res.json({newUrl : checkoutSession.url})
-//     })
-//     .catch((error) => {
-//       res.status(500).json({error: error.message})
-//     })
-// });
 
 
 // POST: UPLOAD an image

@@ -33,6 +33,9 @@ app.use("/auth", authRoutes);
 const reviewRoutes = require("./routes/review.routes");
 app.use("/reviews", reviewRoutes);
 
+const paymentRoutes = require("./routes/payment.routes");
+app.use("/payment", paymentRoutes);
+
 app.use(async (req, res, next) => {
     try {
       const token = req.headers.authorization;
