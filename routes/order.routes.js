@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
       return transporter.sendMail({
         from: `"Plantastic" <${process.env.SECRET_EMAIL}>`,
         to: email,
-        subject: "If you see this email it means the payment is now dynamic :)!",
+        subject: "Thank you for order!",
         text: `Dear ${userFirstName}, We hope this email finds you in good leaves! We just wanted to take a moment to thank you for choosing to shop with us at Plantastic! We are thrilled to have been a part of helping you bring some greenery into your life.
         We're pretty sure your plants are already thanking you for giving them such a loving new home.
         If you have any questions or concerns, don't hesitate to reach out. We're always here to help water the plants...err...your worries away!
