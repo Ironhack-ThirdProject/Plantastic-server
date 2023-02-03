@@ -62,12 +62,12 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 // EDIT a specific review
-router.put("/:reviewId", isAuthenticated, checkCreator, (req, res, next) => {
+router.put("/:reviewId", isAuthenticated, (req, res, next) => {
   const { reviewId } = req.params;
+  console.log("We are in the put request");
 
   Review.findByIdAndUpdate(reviewId, req.body, { new : true })
   .then((res) => {
-    console.log("this is the response: ", res)
     if (!res){
       return res.status(404).json({message : "Review not found"})
     } else {
@@ -88,6 +88,8 @@ router.delete("/:reviewId", isAuthenticated, (req, res, next) => {
       if (!res) {
         return res.status(404).json({ message: "Review not found" });
       } else {
+        console.log("we are deleting..");
+        console.log(res);
         User.updateMany({ $pull: { reviews: reviewId } });
         Product.updateMany({ $pull: { reviews: reviewId } });
       }
