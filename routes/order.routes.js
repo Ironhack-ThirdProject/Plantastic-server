@@ -6,6 +6,7 @@ const Cart = require("../models/Cart.model.js");
 const nodemailer = require("nodemailer");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const bodyParser = require("body-parser");
+const templates = require("../templates/template");
 
 router.post("/", (req, res) => {
   const checkoutSessionId = req.body.data.object.id;
@@ -24,7 +25,7 @@ router.post("/", (req, res) => {
       return Cart.deleteOne({ user: userId });
     })
     .then((deletedCart) => {
-      const email = order.user.email
+      const email = order.user.email;
       const userFirstName = order.firstName;
 
       const transporter = nodemailer.createTransport({
@@ -44,12 +45,7 @@ router.post("/", (req, res) => {
         Stay green and happy growing!
         Best regards,
         The Plantastic Team.`,
-        html: `<div><b>Dear ${userFirstName}</b>, <br />We hope this email finds you in good leaves! We just wanted to take a moment to thank you for choosing to shop with us at Plantastic! We are thrilled to have been a part of helping you bring some greenery into your life.<br />
-        We're pretty sure your plants are already thanking you for giving them such a loving new home. </ br>
-        If you have any questions or concerns, don't hesitate to reach out. We're always here to help water the plants...err...your worries away!<br />
-        Stay green and happy growing!<br />
-        Best regards,
-        The Plantastic Team.</div>`,
+        html: templates.templateExample(userFirstName),
       });
     })
     .then((info) => {
