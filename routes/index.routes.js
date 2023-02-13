@@ -5,6 +5,8 @@ const router = express.Router();
 const fileUploader = require("../config/cloudinary.config.js");
 const User = require("../models/User.model");
 const Order = require("../models/Order.model");
+const Cart = require("../models/Cart.model");
+const templates = require("../templates/template");
 const nodemailer = require("nodemailer");
 const stripe = require("stripe")(process.env.STRIPE_KEY)
 
@@ -12,7 +14,6 @@ const stripe = require("stripe")(process.env.STRIPE_KEY)
 router.post("/checkout", (req, res, next) => {
   const { cart, firstName, lastName, billingAddress, shippingAddress } = req.body
   const userId = cart.user
-  console.log(userId)
   let responseFromStripe;
   
   User.findById(userId)
@@ -74,7 +75,6 @@ router.post("/webhook", (req, res) => {
     { isPaid: true },
     { new: true }
   ).populate("user")
-  // retrieve the password from the response?
     .then((updatedOrder) => {
       order = updatedOrder;
       const userId = order.user._id.toString();
@@ -94,7 +94,7 @@ router.post("/webhook", (req, res) => {
       return transporter.sendMail({
         from: `"Plantastic" <${process.env.TRANSPORTER_EMAIL}>`,
         to: email,
-        subject: "Thank you for order!",
+        subject: "Thank you for your order!",
         text: `Dear ${userFirstName}, We hope this email finds you in good leaves! We just wanted to take a moment to thank you for choosing to shop with us at Plantastic! We are thrilled to have been a part of helping you bring some greenery into your life.
         We're pretty sure your plants are already thanking you for giving them such a loving new home.
         If you have any questions or concerns, don't hesitate to reach out. We're always here to help water the plants...err...your worries away!
@@ -124,6 +124,10 @@ router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
 });
 
 router.get("/profile", isAuthenticated, (req, res, next) => {
+
+});
+
+router.get("/", (req, res, next) => {
 
 });
 

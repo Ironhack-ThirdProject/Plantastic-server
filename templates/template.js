@@ -255,18 +255,6 @@ module.exports = {
         font-size: 28px;
     }
     
-    .heading-section-white h2{
-        color: #ffffff;
-    }
-    .heading-section-white .subheading{
-        margin-bottom: 0;
-        display: inline-block;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: white
-    }
-    
     /*SERVICES*/
     .main-text{
       color: #333;
@@ -352,7 +340,7 @@ module.exports = {
               </td>
               </tr><!-- end tr -->
                     <tr>
-              <td valign="middle" class="hero" id="main-img" style="background-image: url(https://img.freepik.com/free-photo/small-cacti-with-white-wall-background_53876-133169.jpg?w=996&t=st=1675525882~exp=1675526482~hmac=efdabd8613e9c3b02cdfb7b2776eb036ae9ae587b5cdb7054854d918f7624623); background-size: cover; height: 400px;">
+              <td valign="middle" class="hero" id="main-img" style="background-image: url(https://res.cloudinary.com/dm6a8aocc/image/upload/v1676317348/third-project/cacti_zbcydp.png); background-size: cover; height: 400px;">
                 <table>
                     <tr>
                         <td>
@@ -394,7 +382,7 @@ module.exports = {
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
                           <td style="text-align: left; padding-right: 10px;">
-                              <h3 class="heading">Plantastic</h3>
+                              <h3 class="heading" style="padding-left: 20px;">Plantastic</h3>
                           </td>
                         </tr>
                       </table>
@@ -440,7 +428,7 @@ module.exports = {
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tr>
                           <td style="text-align: left; padding-right: 10px;">
-                              <p>&copy; Plantastic</p>
+                              <p style="padding-left: 20px;">&copy; Plantastic</p>
                           </td>
                         </tr>
                       </table>

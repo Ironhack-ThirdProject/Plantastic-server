@@ -2,11 +2,6 @@ const express = require("express");
 const { isAuthenticated, checkAdmin } = require("../middleware/jwt.middleware");
 const router = express.Router();
 const Order = require("../models/Order.model");
-const Cart = require("../models/Cart.model.js");
-const nodemailer = require("nodemailer");
-const stripe = require("stripe")(process.env.STRIPE_KEY);
-const bodyParser = require("body-parser");
-const templates = require("../templates/template");
 
 
 // GET all orders

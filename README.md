@@ -129,7 +129,7 @@ The admin is also equipped with a dynamic dashboard, displaying sales and invent
 | `GET` | `/reviews/product/:productId` | Retrieve all reviews of a product. |
 | `POST` | `/reviews` | Create a review. |
 | `PUT` | `/reviews/:reviewId` | Edit a review. |
-| `DELETE` | `/reviews/:reviewId` | Delete a plant. |
+| `DELETE` | `/reviews/:reviewId` | Delete a review. |
 
 
 ## Environment Variables

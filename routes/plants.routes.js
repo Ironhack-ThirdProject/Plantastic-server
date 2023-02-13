@@ -52,7 +52,6 @@ router.put("/:plantId", isAuthenticated, checkAdmin, (req, res, next) => {
 
   Product.findByIdAndUpdate(plantId, req.body, { new : true })
   .then((res) => {
-    console.log("this is the response: ", res)
     if (!res){
       return res.status(404).json({message : "Product not found"})
     } else {

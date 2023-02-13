@@ -13,7 +13,6 @@ router.get("/user/:userId", isAuthenticated, (req, res, next) => {
   console.log(userId);
   Review.find({ userId })
     .then((response) => {
-      console.log("----- this is the response from the ../review/userId");
       console.log(response);
       res.json(response);
     })
@@ -29,7 +28,6 @@ router.get("/product/:productId", isAuthenticated, (req, res, next) => {
   
   Review.find({ productId })
     .then((response) => {
-      console.log("----- this is the response from the ../review/userId");
       console.log(response);
       res.json(response);
     })
