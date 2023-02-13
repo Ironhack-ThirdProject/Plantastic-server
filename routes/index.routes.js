@@ -22,7 +22,6 @@ router.post("/checkout", (req, res, next) => {
     })
   })
   .then((newStripeCustomer) => {
-    console.log("This is a stripe customer:", newStripeCustomer)
     return stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -46,7 +45,6 @@ router.post("/checkout", (req, res, next) => {
   })
     .then((checkoutSession) => {
       responseFromStripe = checkoutSession
-      console.log("THIS IS THE RESPONSE FROM STRIPE*******:", responseFromStripe)
       return Order.create({
         user: cart.user,
         products: cart.products,
@@ -60,13 +58,60 @@ router.post("/checkout", (req, res, next) => {
       });
     })
     .then((orderCreated) => {
-      console.log("AN ORDER HAS BEEN CREATED!", orderCreated)
       res.json({newUrl : responseFromStripe.url})
     })
     .catch((error) => {
       res.status(500).json({error: error.message})
     })
 });
+
+router.post("/webhook", (req, res) => {
+  const checkoutSessionId = req.body.data.object.id;
+  let order;
+
+  Order.findOneAndUpdate(
+    { checkoutSessionId: checkoutSessionId },
+    { isPaid: true },
+    { new: true }
+  ).populate("user")
+  // retrieve the password from the response?
+    .then((updatedOrder) => {
+      order = updatedOrder;
+      const userId = order.user._id.toString();
+      return Cart.deleteOne({ user: userId });
+    })
+    .then((deletedCart) => {
+      const email = order.user.email;
+      const userFirstName = order.firstName;
+
+      const transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+          user: process.env.TRANSPORTER_EMAIL,
+          pass: process.env.TRANSPORTER_PASSWORD,
+        },
+      });
+      return transporter.sendMail({
+        from: `"Plantastic" <${process.env.TRANSPORTER_EMAIL}>`,
+        to: email,
+        subject: "Thank you for order!",
+        text: `Dear ${userFirstName}, We hope this email finds you in good leaves! We just wanted to take a moment to thank you for choosing to shop with us at Plantastic! We are thrilled to have been a part of helping you bring some greenery into your life.
+        We're pretty sure your plants are already thanking you for giving them such a loving new home.
+        If you have any questions or concerns, don't hesitate to reach out. We're always here to help water the plants...err...your worries away!
+        Stay green and happy growing!
+        Best regards,
+        The Plantastic Team.`,
+        html: templates.templateExample(userFirstName),
+      });
+    })
+    .then((info) => {
+      console.log("message:", { info });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 
 
 // POST: UPLOAD an image

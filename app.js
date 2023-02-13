@@ -18,6 +18,9 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
+
 const plantsRoutes = require("./routes/plants.routes");
 app.use("/plants", plantsRoutes);
 
@@ -26,9 +29,6 @@ app.use("/cart", cartRoutes);
 
 const orderRoutes = require("./routes/order.routes");
 app.use("/order", orderRoutes);
-
-const authRoutes = require("./routes/auth.routes");
-app.use("/auth", authRoutes);
 
 const reviewRoutes = require("./routes/review.routes");
 app.use("/reviews", reviewRoutes);

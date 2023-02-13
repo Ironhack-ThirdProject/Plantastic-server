@@ -82,9 +82,9 @@ router.post("/", isAuthenticated, (req, res, next) => {
 });
 
 // DELETE products in the cart
-router.delete("/", isAuthenticated, (req, res, next) => {
+router.delete("/:productId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
-  const productId = req.query.id;
+  const productId = req.params.productId;
 
   Cart.findOne({ user: userId })
     .then((cart) => {
@@ -120,7 +120,7 @@ router.delete("/", isAuthenticated, (req, res, next) => {
 });
 
 // UPDATE quantity of products in the cart
-router.put("/", isAuthenticated, (req, res, next) => {
+router.put("/:productId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
   const { productId, quantity } = req.body;
   let productObject;
