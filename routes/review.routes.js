@@ -10,7 +10,6 @@ const Product = require("../models/Product.model");
 router.get("/user/:userId", isAuthenticated, (req, res, next) => {
   const userId = req.payload._id;
 
-  console.log(userId);
   Review.find({ userId })
     .then((response) => {
       console.log(response);
@@ -24,7 +23,6 @@ router.get("/user/:userId", isAuthenticated, (req, res, next) => {
 //reviews/product/485979320948652ß9385
 router.get("/product/:productId", isAuthenticated, (req, res, next) => {
   const productId = req.params.productId;
-  console.log(productId);
   
   Review.find({ productId })
     .then((response) => {
@@ -45,10 +43,6 @@ router.post("/", isAuthenticated, (req, res, next) => {
     rating: req.body.rating,
     text: req.body.text,
   };
-  console.log("---- New Review ----");
-  console.log(newReview);
-
-  console.log("New Review === ", newReview);
 
   Review.create(newReview)
     .then((response) => {
@@ -62,7 +56,6 @@ router.post("/", isAuthenticated, (req, res, next) => {
 // EDIT a specific review
 router.put("/:reviewId", isAuthenticated, (req, res, next) => {
   const { reviewId } = req.params;
-  console.log("We are in the put request");
 
   Review.findByIdAndUpdate(reviewId, req.body, { new : true })
   .then((res) => {

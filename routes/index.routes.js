@@ -123,20 +123,8 @@ router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
   res.json({ imageURL: req.file.path });
 });
 
-router.get("/profile", isAuthenticated, (req, res, next) => {
-
-});
-
-router.get("/", (req, res, next) => {
-
-});
-
-router.get("/dashboard", isAuthenticated, checkAdmin, (req, res, next) => {
-
-});
-
-router.get("/checkout", isAuthenticated, (req, res, next) => {
-  
-});
-
 module.exports = router;
+
+router.get("/", (req, res) => {
+  res.json({message: "Everything's fine"})
+})
