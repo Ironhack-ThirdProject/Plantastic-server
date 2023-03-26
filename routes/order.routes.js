@@ -23,7 +23,6 @@ router.get("/:userId", isAuthenticated, (req, res, next) => {
   Order.find({ user: userId })
     .populate("products.productId")
     .then((response) => {
-      console.log(response);
       res.json(response);
     })
     .catch((error) => {

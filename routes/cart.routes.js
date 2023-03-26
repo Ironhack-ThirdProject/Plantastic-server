@@ -26,7 +26,6 @@ router.post("/", isAuthenticated, (req, res, next) => {
 
   Product.findById(productId)
     .then((product) => {
-      console.log("this is the product: ", product);
       if (product === null) {
         return res.status(400).send("Product not found.");
       } else if (product.stock === 0) {

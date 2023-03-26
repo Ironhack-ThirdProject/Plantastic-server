@@ -105,7 +105,7 @@ router.post("/webhook", (req, res) => {
       });
     })
     .then((info) => {
-      console.log("message:", { info });
+      res.status(200).end()
     })
     .catch((err) => {
       console.log(err);
@@ -126,5 +126,5 @@ router.post("/upload", fileUploader.single("imageURL"), (req, res, next) => {
 module.exports = router;
 
 router.get("/", (req, res) => {
-  res.json({message: "Everything's fine"})
+  res.json({message: "Everything OK"})
 })

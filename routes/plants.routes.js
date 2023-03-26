@@ -21,9 +21,6 @@ router.get("/", (req, res, next) => {
 
 // POST: CREATE a plant
 router.post("/", isAuthenticated, checkAdmin, (req, res, next) => {
-  // TODO image URL
-
-  console.log("REQ.BODY === ", req.body)
 
   Product.create(req.body)
   .then((response) => {
