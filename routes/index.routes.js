@@ -85,12 +85,15 @@ router.post("/webhook", (req, res) => {
       const userFirstName = order.firstName;
 
       const transporter = nodemailer.createTransport({
-        service: "Outlook365",
-        secure: false,
+        host: 'smtp.office365.com',
+        port: 587,
+        secure: false, // false for 587, true for 465
+        requireTLS: true,
         auth: {
           user: process.env.TRANSPORTER_EMAIL,
           pass: process.env.TRANSPORTER_PASSWORD,
         },
+
       });
       return transporter.sendMail({
         from: `"Plantastic" <${process.env.TRANSPORTER_EMAIL}>`,
