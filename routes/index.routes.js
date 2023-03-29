@@ -108,7 +108,7 @@ router.post("/webhook", (req, res) => {
       res.status(200).end()
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).send(err);
     });
 });
 
