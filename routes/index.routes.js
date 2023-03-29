@@ -85,7 +85,8 @@ router.post("/webhook", (req, res) => {
       const userFirstName = order.firstName;
 
       const transporter = nodemailer.createTransport({
-        service: "hotmail",
+        service: "Outlook365",
+        secure: false,
         auth: {
           user: process.env.TRANSPORTER_EMAIL,
           pass: process.env.TRANSPORTER_PASSWORD,
